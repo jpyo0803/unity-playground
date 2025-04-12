@@ -14,32 +14,25 @@ public class PhysicalObject2D : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Calculate net force acting on the object accounting all the other PhysicalObject2D in the scene
-        Vector2 netForce = Vector2.zero;
-        var allObjects = GameObject.FindObjectsByType<PhysicalObject2D>(FindObjectsSortMode.None);
-        foreach (PhysicalObject2D other in allObjects)
-        {
-            if (other != this)
-            {
-                Vector2 direction = other.transform.position - transform.position;
-                float distance = direction.magnitude;
-                direction.Normalize();
-                float forceMagnitude = (mass_ * other.mass_) / (distance * distance); // Gravitational force
-                netForce += forceMagnitude * direction;
-            }
-        }
+        // Update the position of the object based on its velocity and acceleration
+        Vector2 position = transform.position;
+        position += velocity_ * Time.deltaTime;
+        transform.position = position;
 
-        // Calculate acceleration using Newton's second law: F = m * a => a = F / m
-        acceleration_ = netForce / mass_;
-        // Update velocity using the acceleration
-        velocity_ += acceleration_ * Time.deltaTime;
-        // Update position using the velocity
-        transform.position += (Vector3)velocity_ * Time.deltaTime;
+        // Reset acceleration for the next frame
+        acceleration_ = Vector2.zero;
     }
 
-    float GetMass()
+    public float GetMass()
     {
         return mass_;
     }
 
+    public void ApplyNetForce(Vector2 force)
+    {
+        // Apply a net force to the object
+        Vector2 netForce = force / mass_;
+        acceleration_ += netForce;
+        velocity_ += acceleration_ * Time.deltaTime;
+    }
 }
