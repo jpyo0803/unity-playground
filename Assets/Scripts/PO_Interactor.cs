@@ -17,20 +17,18 @@ public class PO_Interactor : MonoBehaviour
         var all_objects = GameObject.FindObjectsByType<PhysicalObject2D>(FindObjectsSortMode.None);
         Vector2[] netforces = new Vector2[all_objects.Length];
 
-        for (int i = 0; i < all_objects.Length; i++)
+        for (int i = 0; i < all_objects.Length - 1; i++)
         {
-            for (int j = 0; j < all_objects.Length; j++)
+            for (int j = i + 1; j < all_objects.Length; j++)
             {
-                if (i != j)
-                {
-                    Vector2 direction = all_objects[j].transform.position - all_objects[i].transform.position;
-                    float distance = direction.magnitude;
-                    float clamped_distance = Mathf.Max(distance, min_distance_);
-                    direction.Normalize();
-                    float forceMagnitude = (all_objects[i].GetMass() * all_objects[j].GetMass()) / (clamped_distance * clamped_distance);
-                    Vector2 force = direction * forceMagnitude;
-                    netforces[i] += force;
-                }
+                Vector2 direction = all_objects[j].transform.position - all_objects[i].transform.position;
+                float distance = direction.magnitude;
+                float clamped_distance = Mathf.Max(distance, min_distance_);
+                direction.Normalize();
+                float forceMagnitude = (all_objects[i].GetMass() * all_objects[j].GetMass()) / (clamped_distance * clamped_distance);
+                Vector2 force = direction * forceMagnitude;
+                netforces[i] += force;
+                netforces[j] -= force; // Apply equal and opposite force to the other object
             }
         }
 
