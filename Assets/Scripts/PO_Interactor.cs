@@ -3,6 +3,7 @@ using UnityEngine;
 public class PO_Interactor : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private const float min_distance_ = 0.1f; // Minimum distance to avoid division by zero
     void Start()
     {
         
@@ -24,8 +25,9 @@ public class PO_Interactor : MonoBehaviour
                 {
                     Vector2 direction = all_objects[j].transform.position - all_objects[i].transform.position;
                     float distance = direction.magnitude;
+                    float clamped_distance = Mathf.Max(distance, min_distance_);
                     direction.Normalize();
-                    float forceMagnitude = (all_objects[i].GetMass() * all_objects[j].GetMass()) / (distance * distance);
+                    float forceMagnitude = (all_objects[i].GetMass() * all_objects[j].GetMass()) / (clamped_distance * clamped_distance);
                     Vector2 force = direction * forceMagnitude;
                     netforces[i] += force;
                 }
