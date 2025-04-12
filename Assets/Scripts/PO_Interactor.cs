@@ -4,10 +4,10 @@ public class PO_Interactor : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private const float min_distance_ = 0.1f; // Minimum distance to avoid division by zero
-    void Start()
-    {
+    // void Start()
+    // {
         
-    }
+    // }
 
     // Update is called once per frame
     void Update()
