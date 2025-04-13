@@ -3,7 +3,7 @@ using UnityEngine;
 public class PhysicalObject2D : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] private float mass_ = 1.0f; // Point Mass of the object
+    [HideInInspector] private float mass_ = 1.0f; // Point Mass of the object
     private Rigidbody2D rb_;
     void Start()
     {
@@ -19,7 +19,7 @@ public class PhysicalObject2D : MonoBehaviour
 
     public float GetMass()
     {
-        return mass_;
+        return rb_.mass;
     }
 
     public void ApplyNetForce(Vector2 force)
